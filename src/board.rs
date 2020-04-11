@@ -1,5 +1,3 @@
-use std::fmt::{Formatter, Error};
-
 pub const WIDTH: usize = 7;
 pub const HEIGHT: usize = 6;
 
@@ -16,7 +14,7 @@ pub struct Board {
 
 impl Board {
     pub fn new() -> Self {
-        let mut array = vec![vec![Cell::Empty; HEIGHT]; WIDTH];
+        let array = vec![vec![Cell::Empty; HEIGHT]; WIDTH];
         Board {
             cells: array,
         }
@@ -25,8 +23,8 @@ impl Board {
     fn print_cell(&self, w: usize, h: usize) -> char {
         // let cell = self.cells[w][h];
         match self.cells[w][h] {
-            Cell::TYellow => 'Y',
-            Cell::ORed => 'R',
+            Cell::TYellow => 'T',
+            Cell::ORed => 'O',
             Cell::Empty => ' ',
         }
     }
@@ -71,7 +69,7 @@ impl Board {
     pub fn place(&mut self, color: Cell, col: usize) {
         match self.get_height(col) {
             Ok(height) => { self.set_cell(color, col, height) },
-            Err(False) => { println!("column is full") },
+            Err(_) => { println!("column is full") },
         }
     }
 }
