@@ -1,6 +1,7 @@
 use crate::board::{Board, Cell};
 
 mod board;
+mod app_server;
 
 fn main() {
     let mut b = Board::new();
@@ -23,4 +24,6 @@ fn main() {
 
     b.place(Cell::ORed, 1);
     println!("{}", b);
+
+    app_server::app::run();
 }
