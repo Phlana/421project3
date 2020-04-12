@@ -1,7 +1,7 @@
 use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use serde::{Serialize, Deserialize};
 use crate::app_server::models::game::{Game};
-pub use crate::app_server::models::db_object::db_object; 
+pub use crate::app_server::models::DBObject::DBObject;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PostBody {

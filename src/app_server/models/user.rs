@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-pub use crate::app_server::models::db_object::{db_object}; 
+pub use crate::app_server::models::DBObject::{DBObject};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -7,7 +7,7 @@ pub struct User {
     pub name: String,
 }
 
-impl db_object for User {
+impl DBObject for User {
     fn new() -> Self {
         User {
             id: "-1".to_string(),

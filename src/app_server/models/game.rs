@@ -1,4 +1,4 @@
-pub use crate::app_server::models::db_object::{db_object}; 
+pub use crate::app_server::models::DBObject::{DBObject};
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -13,7 +13,7 @@ pub struct Game {
     pub game_date: String, //TODO: Change this to our date format of choice
 }
 
-impl db_object for Game {
+impl DBObject for Game {
     fn new() -> Self {
         Game {
             game_number: "-1".to_string(),
