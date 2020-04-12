@@ -1,4 +1,5 @@
 use actix_web::{ error, middleware, web, App, Error, HttpRequest, HttpResponse, HttpServer};
+use actix_files::Files;
 use crate::app_server::routes::api;
 use crate::app_server::routes::index;
 use crate::app_server::routes::users;
@@ -28,6 +29,8 @@ pub async fn run() -> std::io::Result<()> {
         .service(
             web::resource("/users")
                 .route(web::get().to(users::get_users)))
+        .service(
+            Files::new("/", "./page").index_file("index.html"))
     })
     .bind("127.0.0.1:3000")?
     .run()
