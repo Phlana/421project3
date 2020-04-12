@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-pub use crate::app_server::models::DBObject::{DBObject};
+pub use crate::app_server::models::db_object::{DBObject};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {

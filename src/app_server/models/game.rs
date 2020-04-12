@@ -1,4 +1,4 @@
-pub use crate::app_server::models::DBObject::{DBObject};
+pub use crate::app_server::models::db_object::{DBObject};
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
