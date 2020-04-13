@@ -33,10 +33,12 @@ fn main() {
     println!("{}", b);
     b.place(Cell::ORed, 3);
     println!("{}", b);
-    b.place(Cell::ORed, 3);
-    println!("{}", b);
-    // b.place(Cell::TYellow, 2);
-    // println!("{}", b);
     b.place(Cell::TYellow, 3);
     println!("{}", b);
+    // b.place(Cell::TYellow, 1);
+    // println!("{}", b);
+    // b.place(Cell::TYellow, 2);
+    // println!("{}", b);
+    // b.place(Cell::TYellow, 3);
+    // println!("{}", b);
 }
