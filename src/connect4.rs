@@ -1,21 +1,17 @@
-#[derive(Clone, PartialEq)]
-pub enum Cell {
-    TYellow,
-    ORed,
-    Empty,
-}
+use crate::board_mod::Cell;
+use crate::board_mod::board_mod::*;
 
-pub struct Board {
+pub struct C4Board {
     width: usize,
     height: usize,
     cols_filled: usize,
     cells: Vec<Vec<Cell>>,
 }
 
-impl Board {
-    pub fn new(width: usize, height: usize) -> Self {
+impl BoardLike for C4Board {
+    fn new(width: usize, height: usize) -> Self {
         let array = vec![vec![Cell::Empty; height]; width];
-        Board {
+        C4Board {
             width,
             height,
             cols_filled: 0,
@@ -23,31 +19,37 @@ impl Board {
         }
     }
 
-    fn print_cell(&self, w: usize, h: usize) -> char {
-        match self.cells[w][h] {
-            Cell::TYellow => 'T',
-            Cell::ORed => 'O',
-            Cell::Empty => ' ',
+    fn place(&mut self, color: Cell, col: usize) {
+        match self.find_height(col) {
+            Ok(height) => {
+                self.set_cell(color.clone(), col, height);
+                if height == self.height - 1 {
+                    // last spot in column filled
+                    println!("column filled");
+                    self.cols_filled += 1;
+                    if self.cols_filled == self.width {
+                        // all columns filled
+                        println!("board is full");
+                    }
+                }
+                match self.check_win( col, height) {
+                    "red" => { println!("red wins") },
+                    "yellow" => { println!("yellow wins") },
+                    _ => {},
+                }
+            },
+            Err(_) => { println!("column is full") },
         }
     }
+}
 
-    pub fn to_string(&self) -> String {
-        let mut string = String::new();
-        for h in 0..self.height {
-            // start of board
-            string.push('|');
-            for w in 0..self.width {
-                // string.push(std::char::from_digit(w as u32, 10).unwrap());
-                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
-                // string.push(' ');
-                string.push(self.print_cell(w, self.height - h - 1));
-                string.push('|');
-            }
-            // new row
-            string.push('\n');
+impl BoardLikePrivate for C4Board {
+    fn print_cell(&self, w: usize, h: usize) -> char {
+        match self.cells[w][h] {
+            Cell::TYellow => 'Y',
+            Cell::ORed => 'R',
+            Cell::Empty => '_',
         }
-
-        string
     }
 
     fn find_height(&self, col: usize) -> Result<usize, bool> {
@@ -67,51 +69,33 @@ impl Board {
         self.cells[w][h] = color;
     }
 
-    fn check_cell_color(&self, color: Cell, w: usize, h: usize) -> bool {
-        if self.cells[w][h] == color {
-            return true;
-        }
-        false
-    }
-
-    pub fn place(&mut self, color: Cell, col: usize) {
-        match self.find_height(col) {
-            Ok(height) => {
-                self.set_cell(color.clone(), col, height);
-                if height == self.height - 1 {
-                    // last spot in column filled
-                    println!("column filled");
-                    self.cols_filled += 1;
-                    if self.cols_filled == self.width {
-                        // all columns filled
-                        println!("board is full");
-                    }
-                }
-                if self.check_win(color.clone(), col, height) {
-                    println!("game is over");
-                }
-            },
-            Err(_) => { println!("column is full") },
-        }
-    }
-
-    fn check_win(&self, color: Cell, column: usize, height: usize) -> bool {
-        let mut count = 0u8;
+    fn check_win(&self, column: usize, height: usize) -> &str {
+        let mut rcount = 0u8;
+        let mut ycount = 0u8;
+        let red = Cell::ORed;
+        let yellow = Cell::TYellow;
         // checking vertical
         // needs to have enough pieces underneath to bother checking
         if height > 2 {
             for h in height-3..height+1 {
-                if self.check_cell_color(color.clone(), column, height-h) {
-                    count += 1;
-                    if count == 4 {
-                        return true;
+                if self.check_cell_color(red.clone(), column, height-h) {
+                    ycount = 0;
+                    rcount += 1;
+                    if rcount == 4 {
+                        return "red";
                     }
                 }
                 else {
-                    count = 0;
-                    break;
+                    rcount = 0;
+                    ycount += 1;
+                    if ycount == 4 {
+                        return "yellow";
+                    }
                 }
             }
+            // winner not fount, reset counts
+            rcount = 0;
+            ycount = 0;
         }
 
         // checking horizontal
@@ -130,20 +114,32 @@ impl Board {
             right = column + 3;
         }
         for c in left..right+1 {
-            if self.check_cell_color(color.clone(), c, height) {
-                count += 1;
-                if count == 4 {
-                    return true;
+            if self.check_cell_color(red.clone(), c, height) {
+                ycount = 0;
+                rcount += 1;
+                if rcount == 4 {
+                    return "red";
+                }
+            }
+            else if self.check_cell_color(yellow.clone(), c, height) {
+                rcount = 0;
+                ycount += 1;
+                if ycount == 4 {
+                    return "yellow";
                 }
             }
             else {
-                count = 0;
+                // empty cell, reset both counts
+                rcount = 0;
+                ycount = 0;
             }
         }
+        // winner not fount, reset counts
+        rcount = 0;
+        ycount = 0;
 
         // checking diagonals
         // \diagonal
-        count = 0;
         // getting bounds
         let mut top = height as i32;
         let mut left = column as i32;
@@ -168,21 +164,33 @@ impl Board {
         let mut w = left;
         let mut h = top;
         while w < right+1 || h < bottom-1 {
-            if self.check_cell_color(color.clone(), w as usize, h as usize) {
-                count += 1;
-                if count == 4 {
-                    return true;
+            if self.check_cell_color(red.clone(), w as usize, h as usize) {
+                ycount = 0;
+                rcount += 1;
+                if rcount == 4 {
+                    return "red";
+                }
+            }
+            else if self.check_cell_color(yellow.clone(), w as usize, h as usize) {
+                rcount = 0;
+                ycount += 1;
+                if ycount == 4 {
+                    return "yellow";
                 }
             }
             else {
-                count = 0;
+                // empty cell, reset both counts
+                rcount = 0;
+                ycount = 0;
             }
             w += 1;
             h -= 1;
         }
+        // winner not fount, reset counts
+        rcount = 0;
+        ycount = 0;
 
         // /diagonal
-        count = 0;
         // getting bounds
         let mut top = height as i32;
         let mut left = column as i32;
@@ -207,24 +215,75 @@ impl Board {
         let mut w = left;
         let mut h = bottom;
         while w < right+1 || h < top+1 {
-            if self.check_cell_color(color.clone(), w as usize, h as usize) {
-                count += 1;
-                if count == 4 {
-                    return true;
+            if self.check_cell_color(red.clone(), w as usize, h as usize) {
+                ycount = 0;
+                rcount += 1;
+                if rcount == 4 {
+                    return "red";
+                }
+            }
+            else if self.check_cell_color(yellow.clone(), w as usize, h as usize) {
+                rcount = 0;
+                ycount += 1;
+                if ycount == 4 {
+                    return "yellow";
                 }
             }
             else {
-                count = 0;
+                // empty cell, reset both counts
+                rcount = 0;
+                ycount = 0;
             }
             w += 1;
             h += 1;
         }
 
-        false
+        // no win detected
+        return "";
     }
 }
 
-impl std::fmt::Display for Board {
+impl C4Board {
+
+
+
+
+    pub fn to_string(&self) -> String {
+        let mut string = String::new();
+        for h in 0..self.height {
+            // start of board
+            string.push('|');
+            for w in 0..self.width {
+                // string.push(std::char::from_digit(w as u32, 10).unwrap());
+                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
+                // string.push(' ');
+                string.push(self.print_cell(w, self.height - h - 1));
+                string.push('|');
+            }
+            // new row
+            string.push('\n');
+        }
+
+        string
+    }
+
+
+
+
+
+    fn check_cell_color(&self, color: Cell, w: usize, h: usize) -> bool {
+        if self.cells[w][h] == color {
+            return true;
+        }
+        false
+    }
+
+
+
+
+}
+
+impl std::fmt::Display for C4Board {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.to_string())
     }

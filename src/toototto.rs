@@ -1,21 +1,18 @@
-#[derive(Clone, PartialEq)]
-pub enum Cell {
-    TYellow,
-    ORed,
-    Empty,
-}
+use crate::board_mod::Cell;
+use crate::board_mod::board_mod::*;
 
-pub struct Board {
+pub struct TOBoard {
     width: usize,
     height: usize,
     cols_filled: usize,
     cells: Vec<Vec<Cell>>,
 }
 
-impl Board {
-    pub fn new(width: usize, height: usize) -> Self {
+
+impl BoardLike for TOBoard {
+    fn new(width: usize, height: usize) -> Self {
         let array = vec![vec![Cell::Empty; height]; width];
-        Board {
+        TOBoard {
             width,
             height,
             cols_filled: 0,
@@ -23,51 +20,7 @@ impl Board {
         }
     }
 
-    fn print_cell(&self, w: usize, h: usize) -> char {
-        match self.cells[w][h] {
-            Cell::TYellow => 'T',
-            Cell::ORed => 'O',
-            Cell::Empty => '_',
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        let mut string = String::new();
-        for h in 0..self.height {
-            // start of board
-            string.push('|');
-            for w in 0..self.width {
-                // string.push(std::char::from_digit(w as u32, 10).unwrap());
-                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
-                // string.push(' ');
-                string.push(self.print_cell(w, self.height - h - 1));
-                string.push('|');
-            }
-            // new row
-            string.push('\n');
-        }
-
-        string
-    }
-
-    fn find_height(&self, col: usize) -> Result<usize, bool> {
-        let mut height = 0usize;
-        loop {
-            if self.cells[col][height] == Cell::Empty {
-                return Ok(height);
-            }
-            height += 1;
-            if height >= self.height {
-                return Err(false);
-            }
-        }
-    }
-
-    fn set_cell(&mut self, color: Cell, w: usize, h: usize) {
-        self.cells[w][h] = color;
-    }
-
-    pub fn place(&mut self, color: Cell, col: usize) {
+    fn place(&mut self, color: Cell, col: usize) {
         match self.find_height(col) {
             Ok(height) => {
                 self.set_cell(color.clone(), col, height);
@@ -89,6 +42,33 @@ impl Board {
             },
             Err(_) => { println!("column is full") },
         }
+    }
+}
+
+impl BoardLikePrivate for TOBoard {
+    fn print_cell(&self, w: usize, h: usize) -> char {
+        match self.cells[w][h] {
+            Cell::TYellow => 'T',
+            Cell::ORed => 'O',
+            Cell::Empty => '_',
+        }
+    }
+
+    fn find_height(&self, col: usize) -> Result<usize, bool> {
+        let mut height = 0usize;
+        loop {
+            if self.cells[col][height] == Cell::Empty {
+                return Ok(height);
+            }
+            height += 1;
+            if height >= self.height {
+                return Err(false);
+            }
+        }
+    }
+
+    fn set_cell(&mut self, color: Cell, w: usize, h: usize) {
+        self.cells[w][h] = color;
     }
 
     fn check_win(&self, column: usize, height: usize) -> &str {
@@ -277,8 +257,29 @@ impl Board {
     }
 }
 
-impl std::fmt::Display for Board {
+impl Format for TOBoard {
+    fn format(&self) -> String {
+        let mut string = String::new();
+        for h in 0..self.height {
+            // start of board
+            string.push('|');
+            for w in 0..self.width {
+                // string.push(std::char::from_digit(w as u32, 10).unwrap());
+                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
+                // string.push(' ');
+                string.push(self.print_cell(w, self.height - h - 1));
+                string.push('|');
+            }
+            // new row
+            string.push('\n');
+        }
+
+        string
+    }
+}
+
+impl std::fmt::Display for TOBoard {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", self.format())
     }
 }
