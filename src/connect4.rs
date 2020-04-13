@@ -167,7 +167,8 @@ impl Board {
         }
         let mut w = left;
         let mut h = top;
-        while w < right || h < bottom {
+        while w < right+1 || h < bottom-1 {
+            println!("checking \\ with w: {}, h: {}", w, h);
             if self.check_cell_color(color.clone(), w as usize, h as usize) {
                 count += 1;
                 if count == 4 {
@@ -184,10 +185,10 @@ impl Board {
         // /diagonal
         count = 0;
         // getting bounds
-        top = height as i32;
-        left = column as i32;
-        bottom = height as i32;
-        right= column as i32;
+        let mut top = height as i32;
+        let mut left = column as i32;
+        let mut bottom = height as i32;
+        let mut right= column as i32;
         for i in 0..4 {
             bottom = height as i32 - 3 + i;
             left = column as i32 - 3 + i;
@@ -206,7 +207,8 @@ impl Board {
         }
         let mut w = left;
         let mut h = bottom;
-        while w < right || h < top {
+        while w < right+1 || h < top+1 {
+            println!("checking / with w: {}, h: {}", w, h);
             if self.check_cell_color(color.clone(), w as usize, h as usize) {
                 count += 1;
                 if count == 4 {
