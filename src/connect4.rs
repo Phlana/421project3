@@ -168,7 +168,6 @@ impl Board {
         let mut w = left;
         let mut h = top;
         while w < right+1 || h < bottom-1 {
-            println!("checking \\ with w: {}, h: {}", w, h);
             if self.check_cell_color(color.clone(), w as usize, h as usize) {
                 count += 1;
                 if count == 4 {
@@ -208,7 +207,6 @@ impl Board {
         let mut w = left;
         let mut h = bottom;
         while w < right+1 || h < top+1 {
-            println!("checking / with w: {}, h: {}", w, h);
             if self.check_cell_color(color.clone(), w as usize, h as usize) {
                 count += 1;
                 if count == 4 {

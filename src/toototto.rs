@@ -67,13 +67,6 @@ impl Board {
         self.cells[w][h] = color;
     }
 
-    fn check_cell_color(&self, color: Cell, w: usize, h: usize) -> bool {
-        if self.cells[w][h] == color {
-            return true;
-        }
-        false
-    }
-
     pub fn place(&mut self, color: Cell, col: usize) {
         match self.find_height(col) {
             Ok(height) => {
@@ -268,21 +261,18 @@ impl Board {
             }
         }
 
-        if toot && otto {
+        return if toot && otto {
             // tie
-            return "tie";
-        }
-        else if toot {
+            "tie"
+        } else if toot {
             // toot wins
-            return "toot";
-        }
-        else if otto {
+            "toot"
+        } else if otto {
             // otto wins
-            return "otto";
-        }
-        else {
+            "otto"
+        } else {
             // no win detected
-            return "";
+            ""
         }
     }
 }
