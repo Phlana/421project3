@@ -8,6 +8,7 @@ pub enum Cell {
 pub struct Board {
     width: usize,
     height: usize,
+    cols_filled: usize,
     cells: Vec<Vec<Cell>>,
 }
 
@@ -17,12 +18,12 @@ impl Board {
         Board {
             width,
             height,
+            cols_filled: 0,
             cells: array,
         }
     }
 
     fn print_cell(&self, w: usize, h: usize) -> char {
-        // let cell = self.cells[w][h];
         match self.cells[w][h] {
             Cell::TYellow => 'T',
             Cell::ORed => 'O',
@@ -77,6 +78,15 @@ impl Board {
         match self.find_height(col) {
             Ok(height) => {
                 self.set_cell(color.clone(), col, height);
+                if height == self.height - 1 {
+                    // last spot in column filled
+                    println!("column filled");
+                    self.cols_filled += 1;
+                    if self.cols_filled == self.width {
+                        // all columns filled
+                        println!("board is full");
+                    }
+                }
                 if self.check_win(color.clone(), col, height) {
                     println!("game is over");
                 }
