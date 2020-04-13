@@ -1,6 +1,6 @@
-use crate::board::{Board, Cell};
+use crate::connect4::{Board, Cell};
 
-mod board;
+mod connect4;
 
 fn main() {
     let mut b = Board::new(7, 6);
