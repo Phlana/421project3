@@ -87,15 +87,18 @@ impl Board {
                         println!("board is full");
                     }
                 }
-                if self.check_win( col, height) {
-                    println!("game is over");
+                match self.check_win( col, height) {
+                    "tie" => { println!("tie") },
+                    "toot" => { println!("toot wins") },
+                    "otto" => { println!("otto wins") },
+                    _ => {},
                 }
             },
             Err(_) => { println!("column is full") },
         }
     }
 
-    fn check_win(&self, column: usize, height: usize) -> bool {
+    fn check_win(&self, column: usize, height: usize) -> &str {
         let mut toot = false;
         let mut otto = false;
         // checking vertical
@@ -152,8 +155,7 @@ impl Board {
 
         if toot && otto {
             // tie already achieved, no point in checking diagonals
-            println!("tie");
-            return true;
+            return "tie";
         }
 
         // checking diagonals
@@ -211,8 +213,7 @@ impl Board {
 
         if toot && otto {
             // tie already achieved, no point in checking other diagonal
-            println!("tie");
-            return true;
+            return "tie";
         }
 
         // /diagonal
@@ -269,21 +270,19 @@ impl Board {
 
         if toot && otto {
             // tie
-            println!("tie");
-            true
+            return "tie";
         }
         else if toot {
             // toot wins
-            println!("toot");
-            true
+            return "toot";
         }
         else if otto {
             // otto wins
-            println!("otto");
-            true
+            return "otto";
         }
         else {
-            false
+            // no win detected
+            return "";
         }
     }
 }
