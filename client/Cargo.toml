@@ -1,0 +1,8 @@
+[package]
+name = "project3"
+version = "0.1.0"
+authors = ["Phlana <joshua.chang422@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+yew = { version = "0.13.0", features = ["std_web"] }
