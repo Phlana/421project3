@@ -18,6 +18,7 @@ pub mod board_mod {
     pub trait BoardLike {
         fn new(width: usize, height: usize) -> Self;
         fn place(&mut self, color: Cell, col: usize);
+        fn get_width(&self) -> usize;
     }
 
     pub trait Format {

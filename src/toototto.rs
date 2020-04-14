@@ -43,6 +43,10 @@ impl BoardLike for TOBoard {
             Err(_) => { println!("column is full") },
         }
     }
+
+    fn get_width(&self) -> usize {
+        self.width
+    }
 }
 
 impl BoardLikePrivate for TOBoard {
