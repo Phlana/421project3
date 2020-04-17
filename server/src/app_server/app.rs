@@ -46,7 +46,7 @@ use bytes::Bytes;
 async fn index(_req: HttpRequest) -> Result<HttpResponse> {
     Ok(HttpResponse::build(StatusCode::OK)
         .content_type("text/html; charset=utf-8")
-        .body(include_str!("../../index.html")) )
+        .body(include_str!("../../static/index.html")) )
 }
 
 use std::path::PathBuf;
@@ -97,7 +97,7 @@ pub async fn run() -> io::Result<()> {
                     .route(web::put().to(index::put_game_id))
                     .route(web::get().to(index::get_game_id))
                     .route(web::delete().to(index::delete_game_id)))
-            .service(fs::Files::new("/", ".").index_file("index.html"))
+            .service(fs::Files::new("/", ".").index_file("./static/index.html"))
 //            .route("/app.wasm", web::get().to(wasm))
 //            .service(fs::Files::new("/", ".").show_files_listing())
             // .service(web::resource("/api/posts")

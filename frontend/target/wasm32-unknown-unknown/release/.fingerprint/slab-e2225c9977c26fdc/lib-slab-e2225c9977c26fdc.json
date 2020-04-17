@@ -1,0 +1,1 @@
+{"rustc":13355374433309949680,"features":"[]","target":3880050090631156709,"profile":2574335274271406459,"path":10486694840369252248,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"wasm32-unknown-unknown/release/.fingerprint/slab-e2225c9977c26fdc/dep-lib-slab-e2225c9977c26fdc"}}],"rustflags":["--cfg","cargo_web"],"metadata":15209347383686928192}
