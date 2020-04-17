@@ -37,16 +37,16 @@ impl Component for Sidebar {
                     <div class="w3-container",>
                         <h3 class="w3-padding-64",>{"Play Connect4"}<br/> {"/ TOOT-OTTO"}</h3>
                     </div>
-                    <a href="/#loading" class="w3-padding w3-hover-white">{"How to Play Connect4"}</a>
-                    <a href="#/Connect4Computer" class="w3-padding w3-hover-white">{"Play Connect4 With Computer"}</a>
-                    <a href="#/Connect4Human" class="w3-padding w3-hover-white">{"Play Connect4 with Another Human"}</a>
+                    <a href="#landing" class="w3-padding w3-hover-white">{"How to Play Connect4"}</a>
+                    <a href="#connect4computer" class="w3-padding w3-hover-white">{"Play Connect4 With Computer"}</a>
+                    <a href="#connect4human" class="w3-padding w3-hover-white">{"Play Connect4 with Another Human"}</a>
                     <br></br>
-                    <a href="#/HowToToot" class="w3-padding w3-hover-white">{"How to Play TOOT-OTTO"}</a>
-                    <a href="#/TootOttoComputer" class="w3-padding w3-hover-white">{"Play Toot-Otto With Computer"}</a>
-                    <a href="#/TootOttoHuman" class="w3-padding w3-hover-white">{"Play Toot-Otto With Another Human"}</a>
+                    <a href="#howtotoot" class="w3-padding w3-hover-white">{"How to Play TOOT-OTTO"}</a>
+                    <a href="#tootottocomputer" class="w3-padding w3-hover-white">{"Play Toot-Otto With Computer"}</a>
+                    <a href="#tootottohuman" class="w3-padding w3-hover-white">{"Play Toot-Otto With Another Human"}</a>
                     <br></br>
-                    <a href="#/ScoreBoard" class="w3-padding w3-hover-white">{"View Game History"}</a>
-                    <a href="#/Scores" class="w3-padding w3-hover-white">{"Score Board"}</a>
+                    <a href="#scoreboard" class="w3-padding w3-hover-white">{"View Game History"}</a>
+                    <a href="#scores" class="w3-padding w3-hover-white">{"Score Board"}</a>
                 </div>
 
     //            <!-- Top menu on small screens -->
