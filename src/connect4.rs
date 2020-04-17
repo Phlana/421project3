@@ -20,20 +20,22 @@ impl BoardLike for C4Board {
         }
     }
 
+    // places a piece in the lowest empty space in a given column
     fn place(&mut self, color: Cell, col: usize) -> &str {
         match self.find_height(col) {
             Ok(height) => {
                 self.set_cell(color.clone(), col, height);
                 if height == self.height - 1 {
-                    // last spot in column filled
+                    // last spot in column has been filled
                     self.cols_filled += 1;
                     if self.cols_filled == self.width {
-                        // all columns filled
+                        // all columns have been filled, if no win condition, then return draw
                         if self.check_win(col, height) == "" {
                             return "draw";
                         }
                     }
                 }
+                // returning win condition
                 return self.check_win( col, height);
             },
             Err(_) => {
@@ -47,6 +49,7 @@ impl BoardLike for C4Board {
         self.width
     }
 
+    // checks a given column to see if it is full or not
     fn check_column(&self, col: usize) -> bool {
         return match self.find_height(col) {
             Ok(_) => true,
@@ -64,6 +67,7 @@ impl BoardLikePrivate for C4Board {
         }
     }
 
+    // finds the height of the lowest empty cell in a given column
     fn find_height(&self, col: usize) -> Result<usize, bool> {
         let mut height = 0usize;
         loop {
@@ -81,6 +85,8 @@ impl BoardLikePrivate for C4Board {
         self.cells[w][h] = color;
     }
 
+    // checks if a player has won
+    // only checks around newly placed pieces
     fn check_win(&self, column: usize, height: usize) -> &str {
         let mut rcount = 0u8;
         let mut ycount = 0u8;
@@ -111,6 +117,7 @@ impl BoardLikePrivate for C4Board {
         }
 
         // checking horizontal
+        // getting bounds of horizontal checking
         let left: usize;
         let right: usize;
         if column < 3 {
@@ -198,7 +205,7 @@ impl BoardLikePrivate for C4Board {
             w += 1;
             h -= 1;
         }
-        // winner not fount, reset counts
+        // winner not found, reset counts
         rcount = 0;
         ycount = 0;
 
@@ -256,19 +263,21 @@ impl BoardLikePrivate for C4Board {
 }
 
 impl C4Board {
+    fn check_cell_color(&self, color: Cell, w: usize, h: usize) -> bool {
+        if self.cells[w][h] == color {
+            return true;
+        }
+        false
+    }
+}
 
-
-
-
-    pub fn to_string(&self) -> String {
+impl Format for C4Board {
+    fn format(&self) -> String {
         let mut string = String::new();
         for h in 0..self.height {
             // start of board
             string.push('|');
             for w in 0..self.width {
-                // string.push(std::char::from_digit(w as u32, 10).unwrap());
-                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
-                // string.push(' ');
                 string.push(self.print_cell(w, self.height - h - 1));
                 string.push('|');
             }
@@ -278,25 +287,10 @@ impl C4Board {
 
         string
     }
-
-
-
-
-
-    fn check_cell_color(&self, color: Cell, w: usize, h: usize) -> bool {
-        if self.cells[w][h] == color {
-            return true;
-        }
-        false
-    }
-
-
-
-
 }
 
 impl std::fmt::Display for C4Board {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", self.format())
     }
 }

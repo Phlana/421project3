@@ -21,6 +21,7 @@ impl BoardLike for TOBoard {
         }
     }
 
+    // places a piece in the lowest empty space in a given column
     fn place(&mut self, color: Cell, col: usize) -> &str{
         match self.find_height(col) {
             Ok(height) => {
@@ -48,6 +49,7 @@ impl BoardLike for TOBoard {
         self.width
     }
 
+    // checks a given column to see if it is full or not
     fn check_column(&self, col: usize) -> bool {
         return match self.find_height(col) {
             Ok(_) => true,
@@ -65,6 +67,7 @@ impl BoardLikePrivate for TOBoard {
         }
     }
 
+    // finds the height of the lowest empty cell in a given column
     fn find_height(&self, col: usize) -> Result<usize, bool> {
         let mut height = 0usize;
         loop {
@@ -82,6 +85,8 @@ impl BoardLikePrivate for TOBoard {
         self.cells[w][h] = color;
     }
 
+    // checks if a player has won
+    // only checks around newly placed pieces
     fn check_win(&self, column: usize, height: usize) -> &str {
         let mut toot = false;
         let mut otto = false;
@@ -100,6 +105,7 @@ impl BoardLikePrivate for TOBoard {
         }
 
         // checking horizontal
+        // getting bounds of horizontal checking
         let left: usize;
         let right: usize;
         if column < 3 {
@@ -275,9 +281,6 @@ impl Format for TOBoard {
             // start of board
             string.push('|');
             for w in 0..self.width {
-                // string.push(std::char::from_digit(w as u32, 10).unwrap());
-                // string.push(std::char::from_digit((self.height - h - 1) as u32, 10).unwrap());
-                // string.push(' ');
                 string.push(self.print_cell(w, self.height - h - 1));
                 string.push('|');
             }
