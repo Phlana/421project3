@@ -9,19 +9,67 @@ mod board_mod;
 mod connect4;
 mod toototto;
 
-fn take_turn(player: i32, width: usize) {
+fn take_turn(width: usize) -> String {
     println!("Which column will you place a piece in? (1-{})", width);
     let mut column = String::new();
     io::stdin().read_line(&mut column).expect("failed to read line");
     column = column.trim().to_string();
+
+    column
 }
 
 fn start_c4() -> bool {
     let mut active = true;
     let mut board = C4Board::new(7, 6);
+
+    // true for yellow turn, false for red turn
+    let mut player = true;
+
     while active {
         print!("{}", board);
-        take_turn(0, board.get_width());
+        match take_turn(board.get_width()).parse::<usize>() {
+            Ok(col) => {
+                if player {
+                    let result = board.place(Cell::TYellow, col-1);
+                    match result {
+                        "draw" => {
+                            println!("board filled with no winner: draw");
+                            break;
+                        },
+                        "full" => { println!("column is full, try again"); },
+                        "red" => {
+                            println!("red wins");
+                            break;
+                        },
+                        "yellow" => {
+                            println!("yellow wins");
+                            break;
+                        },
+                        _ => { player = false; },
+                    }
+                }
+                else {
+                    let result = board.place(Cell::ORed, col-1);
+                    match result {
+                        "draw" => {
+                            println!("board filled with no winner: draw");
+                            break;
+                        },
+                        "full" => { println!("column is full, try again"); },
+                        "red" => {
+                            println!("red wins");
+                            break;
+                        },
+                        "yellow" => {
+                            println!("yellow wins");
+                            break;
+                        },
+                        _ => { player = true; },
+                    }
+                }
+            },
+            Err(_) => { println!("not a number, try again") },
+        }
     }
     true
 }
@@ -29,7 +77,10 @@ fn start_c4() -> bool {
 fn start_toototto() -> bool {
     let mut active = true;
     let mut board = TOBoard::new(6, 4);
-
+    while active {
+        print!("{}", board);
+        take_turn(board.get_width());
+    }
     true
 }
 
