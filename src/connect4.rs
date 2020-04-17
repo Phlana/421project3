@@ -28,9 +28,8 @@ impl BoardLike for C4Board {
                     self.cols_filled += 1;
                     if self.cols_filled == self.width {
                         // all columns filled
-                        println!("board is full");
                         if self.check_win(col, height) == "" {
-                            return "draw"
+                            return "draw";
                         }
                     }
                 }

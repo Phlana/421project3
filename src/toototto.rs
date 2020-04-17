@@ -20,27 +20,26 @@ impl BoardLike for TOBoard {
         }
     }
 
-    fn place(&mut self, color: Cell, col: usize) {
+    fn place(&mut self, color: Cell, col: usize) -> &str{
         match self.find_height(col) {
             Ok(height) => {
                 self.set_cell(color.clone(), col, height);
                 if height == self.height - 1 {
                     // last spot in column filled
-                    println!("column filled");
                     self.cols_filled += 1;
                     if self.cols_filled == self.width {
                         // all columns filled
-                        println!("board is full");
+                        if self.check_win(col, height) == "" {
+                            return "draw"
+                        }
                     }
                 }
-                match self.check_win( col, height) {
-                    "tie" => { println!("tie") },
-                    "toot" => { println!("toot wins") },
-                    "otto" => { println!("otto wins") },
-                    _ => {},
-                }
+                return self.check_win( col, height);
             },
-            Err(_) => { println!("column is full") },
+            Err(_) => {
+                // column is full
+                return "full"
+            },
         }
     }
 
