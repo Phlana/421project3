@@ -8,6 +8,9 @@ mod board_mod;
 mod connect4;
 mod toototto;
 
+extern crate rand;
+use rand::Rng;
+
 fn get_input() -> String {
     let mut string = String::new();
     io::stdin().read_line(&mut string).expect("failed to read line");
@@ -37,7 +40,7 @@ fn take_turn(width: usize) -> usize {
     }
 }
 
-fn start_c4() -> bool {
+fn start_c4() {
     let mut board = C4Board::new(7, 6);
 
     // true for yellow turn, false for red turn
@@ -88,8 +91,6 @@ fn start_c4() -> bool {
     }
     // print the board one last time to show results
     print!("{}", board);
-
-    true
 }
 
 // true for T, false for O
@@ -106,7 +107,7 @@ fn get_piece() -> bool {
     }
 }
 
-fn start_toototto() -> bool {
+fn start_toototto() {
     let mut board = TOBoard::new(6, 4);
 
     let mut player = true;
@@ -162,21 +163,196 @@ fn start_toototto() -> bool {
     }
     // print the board one last time to show results
     print!("{}", board);
+}
 
-    true
+fn computer_turn<T: BoardLike>(board: T, width: usize) -> usize {
+    // find a valid not full column to place
+    let mut not_found = false;
+    let mut col: usize = 0;
+    let mut rng = rand::thread_rng();
+    while !not_found {
+        col = rng.gen_range(0, width);
+
+        not_found = board.check_column(col);
+    }
+    col + 1
+}
+
+fn computer_c4() {
+    let mut board = C4Board::new(7, 6);
+
+    // true for yellow turn, false for red (bot) turn
+    let mut player = true;
+
+    loop {
+        print!("{}", board);
+        let col: usize;
+        if player {
+            println!("It is yellow's turn");
+            col = take_turn(board.get_width());
+        }
+        else {
+            println!("It is red's turn");
+            col = computer_turn(board.clone(), board.get_width());
+        }
+        let result: &str;
+        if player {
+            result = board.place(Cell::TYellow, col-1);
+        }
+        else {
+            result = board.place(Cell::ORed, col-1);
+        }
+        match result {
+            "draw" => {
+                println!("board filled with no winner: draw");
+                break;
+            },
+            "full" => {
+                println!("column is full, try again");
+            },
+            "red" => {
+                println!("red wins");
+                break;
+            },
+            "yellow" => {
+                println!("yellow wins");
+                break;
+            },
+            _ => {
+                // no issues, switch players for next turn
+                if player {
+                    player = false;
+                }
+                else {
+                    player = true;
+                }
+            },
+        }
+    }
+    // print the board one last time to show results
+    print!("{}", board);
+}
+
+fn computer_piece() -> bool {
+    let mut rng = rand::thread_rng();
+    return rng.gen();
+}
+
+fn computer_toototto() {
+    let mut board = TOBoard::new(6, 4);
+
+    let mut player = true;
+
+    loop {
+        print!("{}", board);
+        let piece: bool;
+        let col: usize;
+        if player {
+            println!("It is toot's turn");
+            piece = get_piece();
+            col = take_turn(board.get_width());
+        }
+        else {
+            println!("It is otto's turn");
+            piece = computer_piece();
+            col = computer_turn(board.clone(), board.get_width());
+        }
+
+        let result: &str;
+        if piece {
+            result = board.place(Cell::TYellow, col-1);
+
+        }
+        else {
+            result = board.place(Cell::ORed, col-1);
+        }
+        match result {
+            "draw" => {
+                println!("board filled with no winner: draw");
+                break;
+            },
+            "full" => {
+                println!("column is full, try again");
+            },
+            "toot" => {
+                println!("toot wins");
+                break;
+            },
+            "otto" => {
+                println!("otto wins");
+                break;
+            },
+            "tie" => {
+                println!("result: tie");
+                break;
+            },
+            _ => {
+                // no issues, switch players for next turn
+                if player {
+                    player = false;
+                }
+                else {
+                    player = true;
+                }
+            },
+        }
+    }
+    // print the board one last time to show results
+    print!("{}", board);
 }
 
 fn main() {
-    let mut finished = false;
-    while !finished {
+    // true for connect 4, false for toot otto
+    let mode: bool;
+    // true for human opponent, false for computer opponent
+    let versus: bool;
+
+    loop {
         println!("Which game would you like to play? (connect-4 or toot-otto)");
         let game = get_input();
 
         match game.as_str() {
-            "connect-4" => { finished = start_c4(); },
-            "toot-otto" => { finished = start_toototto(); },
-            "q" | "-q" | "-quit" | "quit" | "exit" => { finished = true; },
+            "connect-4" => {
+                mode = true;
+                break;
+            },
+            "toot-otto" => {
+                mode = false;
+                break;
+            },
+            "q" | "-q" | "-quit" | "quit" | "exit" => { return; },
             _ => { println!("not a valid option, try again"); },
         }
+    }
+
+    loop {
+        println!("Would you like to play against a person or computer? (person or computer)");
+        let opponent = get_input();
+
+        match opponent.as_str() {
+            "person" => {
+                versus = true;
+                break;
+            },
+            "computer" => {
+                versus = false;
+                break;
+            },
+            "q" | "-q" | "-quit" | "quit" | "exit" => { return; },
+            _ => { println!("not a valid option, try again"); },
+        }
+    }
+
+    if mode && versus {
+        start_c4();
+    }
+    else if mode {
+        computer_c4();
+    }
+    else if versus {
+        start_toototto();
+    }
+    else {
+        computer_toototto();
     }
 }

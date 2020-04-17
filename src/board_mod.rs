@@ -19,6 +19,7 @@ pub mod board_mod {
         fn new(width: usize, height: usize) -> Self;
         fn place(&mut self, color: Cell, col: usize) -> &str;
         fn get_width(&self) -> usize;
+        fn check_column(&self, col: usize) -> bool;
     }
 
     pub trait Format {

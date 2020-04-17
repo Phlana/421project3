@@ -1,6 +1,7 @@
 use crate::board_mod::Cell;
 use crate::board_mod::board_mod::*;
 
+#[derive(Clone)]
 pub struct C4Board {
     width: usize,
     height: usize,
@@ -44,6 +45,13 @@ impl BoardLike for C4Board {
 
     fn get_width(&self) -> usize {
         self.width
+    }
+
+    fn check_column(&self, col: usize) -> bool {
+        return match self.find_height(col) {
+            Ok(_) => true,
+            Err(_) => false,
+        }
     }
 }
 
