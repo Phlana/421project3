@@ -1,5 +1,4 @@
 use yew::{prelude::*, virtual_dom::VNode, Properties};
-use yew_router::{prelude::*, switch::AllowMissing};
 
 pub struct Landing {
     props: Props,
@@ -46,6 +45,7 @@ impl Component for Landing {
 
 
                     </ul>
+                    <div id="terminal"/>
                     <p>{"Select the game of your choice from the side bar, and start playing. Enjoy!"}</p>
                   </div>
                 </form>

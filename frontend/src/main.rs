@@ -1,5 +1,5 @@
 #![recursion_limit="512"]
-use yew::{prelude::*, services::fetch::FetchTask, agent::Bridged, format::Json,html, Callback, ClickEvent, Component, ComponentLink, Html, ShouldRender};
+use yew::{prelude::*, agent::Bridged, html, Component, ComponentLink, Html, ShouldRender};
 mod sidebar;
 mod connect4computer;
 mod connect4human;
@@ -67,7 +67,7 @@ pub enum RouterTarget {
 }
 //use yew::{agent::Bridged, format::Json, html, prelude::*, services::fetch::FetchTask};
 use yew_router::{
-    agent::{RouteAgent, RouteRequest::ChangeRoute},
+    agent::{RouteAgent},
     switch::Switch,
 };
 
@@ -81,7 +81,7 @@ impl Component for App {
     type Properties = ();
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let mut router_agent = RouteAgent::bridge(link.callback(Message::Route));
+        let router_agent = RouteAgent::bridge(link.callback(Message::Route));
         Self {
             child_component: Some(RouterTarget::Landing),
             router_agent,

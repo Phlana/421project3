@@ -1,5 +1,4 @@
 use yew::{prelude::*, virtual_dom::VNode, Properties};
-use yew_router::{prelude::*, switch::AllowMissing};
 
 pub struct Connect4Computer {
     props: Props,
@@ -31,6 +30,7 @@ impl Component for Connect4Computer {
     fn view(&self) -> VNode {
         html !{
             <>
+//            <script>{console.log("loogging");}</script>
               <div class="w3-container" id="services" style="margin-top:75px">
                 <h5 class="w3-xxxlarge w3-text-red"><b>{"Enter Your Name"}</b></h5>
                 <hr style="width:50px;border:5px solid red" class="w3-round"/>
