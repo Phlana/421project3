@@ -1,0 +1,1 @@
+/Users/Jordan/workspace/421project3/frontend/target/wasm32-unknown-unknown/debug/libfrontend.rlib: /Users/Jordan/workspace/421project3/frontend/src/lib.rs /Users/Jordan/workspace/421project3/frontend/src/route.rs

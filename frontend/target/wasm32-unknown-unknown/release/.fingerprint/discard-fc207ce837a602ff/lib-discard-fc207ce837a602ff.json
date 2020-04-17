@@ -1,0 +1,1 @@
+{"rustc":13355374433309949680,"features":"[]","target":713630939555576954,"profile":2574335274271406459,"path":11827126416557472664,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"wasm32-unknown-unknown/release/.fingerprint/discard-fc207ce837a602ff/dep-lib-discard-fc207ce837a602ff"}}],"rustflags":["--cfg","cargo_web"],"metadata":1570531467919908743}

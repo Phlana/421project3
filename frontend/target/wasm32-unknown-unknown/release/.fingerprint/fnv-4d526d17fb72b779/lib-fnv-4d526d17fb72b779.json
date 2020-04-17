@@ -1,0 +1,1 @@
+{"rustc":13355374433309949680,"features":"[]","target":4494102238892059738,"profile":2574335274271406459,"path":12311904182885702329,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"wasm32-unknown-unknown/release/.fingerprint/fnv-4d526d17fb72b779/dep-lib-fnv-4d526d17fb72b779"}}],"rustflags":["--cfg","cargo_web"],"metadata":17205452474433819084}
