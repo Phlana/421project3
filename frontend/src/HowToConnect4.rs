@@ -1,20 +1,64 @@
-<div class="w3-main" style="margin-left:390px;margin-right:40px">
-<div class="w3-container" id="services" style="margin-top:75px">
-<h5 class="w3-xxxlarge w3-text-red"><b>{"How to Play Connect 4"}</b></h5>
-<hr style="width:50px;border:5px solid red" class="w3-round">
-<p>{"Connect Four is a two-player connection game in which the players take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs."}
-</p>
-<br/>
-<div><h5>{"To play Connect 4 follow the following steps:"}</h5></div>
-<ul>
+use yew::{prelude::*, virtual_dom::VNode, Properties};
+use yew_router::{prelude::*, switch::AllowMissing};
 
-<li>{"A new game describes discs of which color belongs to which player"}</li>
+pub struct HowToConnect4 {
+    props: Props,
+}
 
-<li>{"Click on the desired column on the game board to place your disc"}</li>
+#[derive(Clone, PartialEq, Properties)]
+pub struct Props { }
 
-<li>{"Try to connect 4 of your colored discs either horizontally or vertically or diagonally"}</li>
+pub enum Msg {}
 
-</ul>
-<br> {"For More information on Connect 4 click "}<a href="https://en.wikipedia.org/wiki/Connect_Four">{"here"}</a>
-</div>
-</div>
+
+impl Component for HowToConnect4 {
+    type Message = Msg;
+    type Properties = Props;
+
+    fn create (props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        HowToConnect4 { props }
+    }
+
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+        true
+    }
+
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        self.props = props;
+        true
+    }
+
+    fn view(&self) -> VNode {
+        html !{
+            <>
+//            <!-- Sidenav/menu -->
+                <div class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:350px;font-weight:bold" id="mySidenav",>
+                    <a href="javascript:void(0)" class="w3-padding-xlarge w3-hide-large w3-display-topleft w3-hover-white" style="width:100%",>{"Close Menu"}</a>
+                    <div class="w3-container",>
+                        <h3 class="w3-padding-64",>{"Play Connect4"}<br/> {"/ TOOT-OTTO"}</h3>
+                    </div>
+                    <a href="/#loading" class="w3-padding w3-hover-white">{"How to Play Connect4"}</a>
+                    <a href="#/Connect4Computer" class="w3-padding w3-hover-white">{"Play Connect4 With Computer"}</a>
+                    <a href="#/Connect4Human" class="w3-padding w3-hover-white">{"Play Connect4 with Another Human"}</a>
+                    <br></br>
+                    <a href="#/HowToToot" class="w3-padding w3-hover-white">{"How to Play TOOT-OTTO"}</a>
+                    <a href="#/TootOttoComputer" class="w3-padding w3-hover-white">{"Play Toot-Otto With Computer"}</a>
+                    <a href="#/TootOttoHuman" class="w3-padding w3-hover-white">{"Play Toot-Otto With Another Human"}</a>
+                    <br></br>
+                    <a href="#/ScoreBoard" class="w3-padding w3-hover-white">{"View Game History"}</a>
+                    <a href="#/Scores" class="w3-padding w3-hover-white">{"Score Board"}</a>
+                </div>
+
+    //            <!-- Top menu on small screens -->
+                <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+                    <a href="javascript:void(0)" class="w3-btn w3-red w3-border w3-border-white w3-margin-right">{"&#9776;"}</a>
+                    <span>{"Connect 4 with MEAN"}</span>
+                </header>
+
+    //            <!-- Overlay effect when opening sidenav on small screens -->
+                <div class="w3-overlay w3-hide-large" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+            </>
+
+        }
+    }
+}

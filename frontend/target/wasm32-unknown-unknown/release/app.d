@@ -1,1 +1,1 @@
-/Users/Jordan/workspace/421project3/frontend/target/wasm32-unknown-unknown/release/app.wasm: /Users/Jordan/workspace/421project3/frontend/src/main.rs
+/Users/Jordan/workspace/421project3/frontend/target/wasm32-unknown-unknown/release/app.wasm: /Users/Jordan/workspace/421project3/frontend/src/main.rs /Users/Jordan/workspace/421project3/frontend/src/sidebar.rs
