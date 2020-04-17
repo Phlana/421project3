@@ -11,7 +11,7 @@ mod toototto;
 fn get_input() -> String {
     let mut string = String::new();
     io::stdin().read_line(&mut string).expect("failed to read line");
-    string = string.trim().to_string();
+    string = string.trim().to_lowercase();
 
     string
 }
@@ -99,8 +99,8 @@ fn get_piece() -> bool {
         let piece = get_input();
 
         match piece.as_str() {
-            "T" => { return true; },
-            "O" => { return false; },
+            "t" => { return true; },
+            "o" => { return false; },
             _ => { println!("not a valid piece, try again"); },
         }
     }
