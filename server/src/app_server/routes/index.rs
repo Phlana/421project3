@@ -1,26 +1,8 @@
 use actix_web::{ web, HttpRequest, HttpResponse };
-use serde::{Serialize, Deserialize};
 use crate::app_server::models::game::{Game};
 pub use crate::app_server::models::db_object::{DBObject, Documentable}; 
 use r2d2::Pool;
 use r2d2_sqlite::SqliteConnectionManager;
-
-// #[derive(Debug, Serialize, Deserialize)]
-// pub struct GameBody {
-//     game_number: String,
-//     game_type: String,
-//     player_1_name: String,
-//     player_2_name: String,
-//     winner_name: String,
-// }
-
-// #[derive(Debug, Serialize, Deserialize)]
-// pub struct GameIdBody {
-//     game_number: String,
-//     player_1_name: String,
-//     player_2_name: String,
-//     winner_name: String,
-// }
 
 pub async fn get_games(db: web::Data<Pool<SqliteConnectionManager>>) -> HttpResponse {
     match Game::find_all(db.get().unwrap()){
