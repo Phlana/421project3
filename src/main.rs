@@ -86,6 +86,9 @@ fn start_c4() -> bool {
             },
         }
     }
+    // print the board one last time to show results
+    print!("{}", board);
+
     true
 }
 
@@ -157,6 +160,9 @@ fn start_toototto() -> bool {
             },
         }
     }
+    // print the board one last time to show results
+    print!("{}", board);
+
     true
 }
 
